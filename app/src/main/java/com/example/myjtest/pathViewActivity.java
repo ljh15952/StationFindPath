@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -19,13 +21,20 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class pathViewActivity extends AppCompatActivity {
     SubsamplingScaleImageView imageView;
     GestureDetector gestureDetector = null;
-    Stack<Station> list;
+
+    private Station clickedStaion;
+    private Button btn_1;
+    private Button btn_2;
+
+    private TextView tv_1;
+    private TextView tv_2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +42,34 @@ public class pathViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_path_view);
         imageView = findViewById(R.id.imageView);
         imageView.setImage(ImageSource.asset("map.png"));
-        list = new Stack<>();
+
+        btn_1 = findViewById(R.id.btn_1);
+        btn_2 = findViewById(R.id.btn_2);
+        tv_1 = findViewById(R.id.tv_1);
+        tv_2 = findViewById(R.id.tv_2);
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 gestureDetector.onTouchEvent(motionEvent);
-                //if (list.size() > 0)
-                  //  Log.d("ASD", list.pop().name + "");
                 return false;
             }
         });
-
+        btn_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_1.setText("출발역: " + clickedStaion.name);
+                btn_1.setVisibility(View.INVISIBLE);
+                btn_2.setVisibility(View.INVISIBLE);
+            }
+        });
+        btn_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_2.setText("도착역: " + clickedStaion.name);
+                btn_1.setVisibility(View.INVISIBLE);
+                btn_2.setVisibility(View.INVISIBLE);
+            }
+        });
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() { // gesture 디텍팅으로 지하철 위치 읽기
             @Override
             public boolean onSingleTapUp(MotionEvent ev) {
@@ -66,7 +92,9 @@ public class pathViewActivity extends AppCompatActivity {
                                     int y2 = jsonObject.getInt("Y2");
                                     Station st = new Station(name, x1, y1, x2, y2);
                                     if (st.isClicked(x_cor, y_cor)) {
-                                        list.add(st);
+                                        clickedStaion = st;
+                                        btn_1.setVisibility(View.VISIBLE);
+                                        btn_2.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), name + "클릭!!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -96,7 +124,6 @@ public class pathViewActivity extends AppCompatActivity {
                         DataRequest loginRequest = new DataRequest(i + "", responseListener);
                         RequestQueue queue = Volley.newRequestQueue(pathViewActivity.this);
                         queue.add(loginRequest);
-
                     }
                 }
                 return super.onSingleTapUp(ev);
