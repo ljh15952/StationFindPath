@@ -145,5 +145,21 @@ public class pathViewActivity extends AppCompatActivity {
             DataRequest Request = new DataRequest(i + "", responseListener);
             queue.add(Request);
         }
+        for (int i = 501; i <= 507; i++) {
+            DataRequest Request = new DataRequest(i + "", responseListener);
+            queue.add(Request);
+        }
+        for (int i = 701; i <= 707; i++) {
+            DataRequest Request = new DataRequest(i + "", responseListener);
+            queue.add(Request);
+        }
+        for (int i = 801; i <= 806; i++) {
+            DataRequest Request = new DataRequest(i + "", responseListener);
+            queue.add(Request);
+        }
+        for (int i = 901; i <= 904; i++) {
+            DataRequest Request = new DataRequest(i + "", responseListener);
+            queue.add(Request);
+        }
     }
 }
