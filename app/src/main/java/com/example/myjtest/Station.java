@@ -1,5 +1,7 @@
 package com.example.myjtest;
 
+import android.util.Log;
+
 public class Station {
     private int x1, y1, x2, y2;
     public int name;
@@ -22,3 +24,4 @@ public class Station {
         return name;
     }
 }
+
